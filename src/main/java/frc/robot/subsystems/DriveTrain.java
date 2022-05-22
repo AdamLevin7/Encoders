@@ -36,7 +36,7 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Position", getPos());
+    SmartDashboard.putNumber("Position: ", getPos());
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {

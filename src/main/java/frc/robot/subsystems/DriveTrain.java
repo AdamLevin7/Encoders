@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends SubsystemBase {
@@ -29,7 +28,7 @@ public class DriveTrain extends SubsystemBase {
     
 
     _diffDrive = new DifferentialDrive(_leftDriveTalon, _righttDriveTalon);
-
+    setPos(0);
 
   }
 

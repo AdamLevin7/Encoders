@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends SubsystemBase {
 
   private final WPI_TalonSRX _leftDriveTalon;
-  private final WPI_TalonSRX _righttDriveTalon;
+  private final WPI_TalonSRX _rightDriveTalon;
+  private double ticksToMeters  = (127.0/10581.0)/100.0; //converts from sensor units to meters
 
   private DifferentialDrive _diffDrive;
 
@@ -21,14 +22,13 @@ public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     _leftDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.LeftDriveTalonPort);
-    _righttDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.RightDriveTalonPort);
+    _rightDriveTalon = new WPI_TalonSRX(Constants.DriveTrainPorts.RightDriveTalonPort);
 
     _leftDriveTalon.setInverted(false);
-    _righttDriveTalon.setInverted(false);
+    _rightDriveTalon.setInverted(false);
     
 
-    _diffDrive = new DifferentialDrive(_leftDriveTalon, _righttDriveTalon);
-    setPos(0);
+    _diffDrive = new DifferentialDrive(_leftDriveTalon, _rightDriveTalon);
 
   }
 
@@ -45,9 +45,14 @@ public class DriveTrain extends SubsystemBase {
     _diffDrive.tankDrive(speed, rotation);
   }
   public double getPos(){
-    return _leftDriveTalon.getSelectedSensorPosition();
+    return (_leftDriveTalon.getSelectedSensorPosition()+_rightDriveTalon.getSelectedSensorPosition()
+    /2*ticksToMeters);
   }
   public void setPos(double pos){
     _leftDriveTalon.setSelectedSensorPosition(pos);
+  }
+  public void resetEncoders(){
+    _leftDriveTalon.setSelectedSensorPosition(0, 0, 10);
+    _rightDriveTalon.setSelectedSensorPosition(0, 0, 10);
   }
 }

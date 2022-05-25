@@ -12,30 +12,29 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
-public class TimedAuto extends CommandBase {
+public class DistanceAuto extends CommandBase {
 
   private final DriveTrain _driveTrain;
-  private final Timer _time;
+  private double pos;
   /** Creates a new TankDrive. */
-  public TimedAuto(DriveTrain dt) {
+  public DistanceAuto(DriveTrain dt, double pos) {
     // Use addRequirements() here to declare subsystem dependencies.
     _driveTrain = dt;
-    _time = new Timer();
+    this.pos = pos;
     addRequirements(_driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _time.start();
-    _time.reset();
+    _driveTrain.setPos(0);
   }
 
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (_driveTrain.getPos() < 1){
+    if (_driveTrain.getPos() < pos){
       _driveTrain.tankDrive(0.6, 0.6);
     }
     else{
@@ -52,6 +51,9 @@ public class TimedAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(_driveTrain.getPos() < pos) {
+      return true;
+    }
     return false;
   }
 }
